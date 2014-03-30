@@ -185,7 +185,7 @@ module Squeel
               persons = Person.joins{[outgoing_messages.outer, incoming_messages.outer]}
               persons = persons.where { (outgoing_messages.author_id.not_eq 7) & (incoming_messages.author_id.not_eq 7) }
               persons = persons.where{(outgoing_messages.recipient_id.not_eq 7) & (incoming_messages.recipient_id.not_eq 7)}
-              expect { persons.to_sql }.not_to raise_error TypeError
+              expect { persons.to_sql }.not_to raise_error
             end
           end
 
@@ -874,7 +874,7 @@ module Squeel
           it "doesn't ruin everything when a group exists" do
             relation = Person.scoped.merge(Person.group{name})
             count_hash = {}
-            expect { count_hash = relation.count }.should_not raise_error
+            expect { count_hash = relation.count }.to_not raise_error
             count_hash.size.should eq Person.scoped.size
             count_hash.values.all? {|v| v == 1}.should be_true
             count_hash.keys.should =~ Person.select{name}.map(&:name)
